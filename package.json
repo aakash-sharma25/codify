@@ -11,11 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.20.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.6.1"
+    "mongoose": "^8.6.1",
+    "react-router-dom": "^6.26.2"
   }
 }
