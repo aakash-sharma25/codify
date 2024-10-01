@@ -7,8 +7,14 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* <Route path="/" element={<D />} /> */}
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/admin" element={<Register />} >
+          
+        </Route>
+
       </Routes>
     </Router>
   );
