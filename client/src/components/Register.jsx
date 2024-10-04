@@ -1,6 +1,16 @@
 import React, { useState } from "react";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+  Grid2,
+  Grid,
+} from "@mui/material";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import illustration from "../assets/Illustration.png";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,16 +20,17 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
     const data = { firstName, lastName, email, password, phone };
 
     axios
-      .post("http://localhost:8000/register", data)
+      .post("http://localhost:8000/api/v1/auth/register", data)
       .then((response) => {
-        console.log("Signup successful:", response.data);
-        // Handle success (e.g., redirect)
+        navigate("/login");
       })
       .catch((error) => {
         console.error("Signup error:", error);
@@ -30,83 +41,125 @@ const Register = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
+    <Grid container style={{ minHeight: "100vh" }}>
+      <Grid
+        item
+        xs={12}
+        sm={7}
+        style={{
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          marginTop: 8,
         }}
       >
-        <Typography variant="h5">Signup</Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box sx={{ width: "80%" }}>
+          <Typography variant="h4" gutterBottom>
+            Create Account
+          </Typography>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                label="First Name"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+
           <TextField
-            margin="normal"
             required
-            fullWidth
-            id="firstName"
-            label="First Name"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="lastName"
-            label="Last Name"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
             label="Email"
             name="email"
-            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
+            variant="outlined"
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <TextField
             margin="normal"
+          />
+
+          <TextField
             required
-            fullWidth
-            id="phone"
-            label="Phone"
+            label="Mobile No"
             name="phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-          />
-          <Button
-            type="submit"
+            variant="outlined"
             fullWidth
+            margin="normal"
+          />
+
+          <TextField
+            required
+            label="Password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            variant="outlined"
+            type="password"
+            fullWidth
+            margin="normal"
+          />
+
+          <Button
             variant="contained"
             color="primary"
-            disabled={loading}
-            sx={{ mt: 3, mb: 2 }}
+            type="submit"
+            fullWidth
+            sx={{ marginTop: 2 }}
+            onClick={handleSubmit}
           >
-            {loading ? "Signing up..." : "Signup"}
+            Create Account
           </Button>
+
+          <Typography variant="body2" align="center" sx={{ marginTop: 2 }}>
+            Already have an account?{" "}
+            <Typography
+              component={"span"}
+              sx={{ color: "blue", cursor: "pointer" }}
+              onClick={() => navigate("/login")}
+            >
+              Login now
+            </Typography>
+          </Typography>
         </Box>
-      </Box>
-    </Container>
+      </Grid>
+
+      <Grid
+        item
+        xs={12}
+        sm={5}
+        style={{
+          backgroundColor: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box sx={{ width: "80%" }}>
+          <img
+            src={illustration} 
+            alt="illustration"
+            style={{ width: "100%" }}
+          />
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 
