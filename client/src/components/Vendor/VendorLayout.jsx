@@ -45,17 +45,11 @@ function VendorLayout({ children }) {
                 </ListItemIcon>
                 <ListItemText primary="Leads" />
               </ListItem>
-              <ListItem button onClick={() => navigate("/superadmin/vendors")}>
+              <ListItem button onClick={() => navigate("/vendor/employees")}>
                 <ListItemIcon>
                   <Group style={{ color: "white" }} />
                 </ListItemIcon>
-                <ListItemText primary="Vendors" />
-              </ListItem>
-              <ListItem button onClick={() => navigate("/superadmin/dashboard")}>
-                <ListItemIcon>
-                  <PlaylistAdd style={{ color: "white" }} />
-                </ListItemIcon>
-                <ListItemText primary="Requested Lead" />
+                <ListItemText primary="Employees" />
               </ListItem>
             </List>
           </Box>
