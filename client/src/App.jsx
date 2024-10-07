@@ -3,12 +3,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AllVendors from "./components/Admin/AllVendors";
 import Premium from "./components/Premium";
 import Profile from "./components/Profile";
+
 const Login = React.lazy(() => import("./components/Login"));
 const Register = React.lazy(() => import("./components/Register"));
 const ProtectedRoute = React.lazy(() => import("./utils/ProtectedRoute"));
 const Dashboard = React.lazy(() => import("./components/Admin/Dashboard"));
-const VendorDashboard = React.lazy(() => import("./components/Vendor/VendorDashboard"));
+const VendorDashboard = React.lazy(() =>
+  import("./components/Vendor/VendorDashboard")
+);
 const AllEmployee = React.lazy(() => import("./components/Vendor/AllEmployee"));
+const AllLeads = React.lazy(() => import("./components/Vendor/AllLeads"));
 
 function App() {
   return (
@@ -30,6 +34,7 @@ function App() {
             </Suspense>
           }
         />
+
         <Route
           path="/premium"
           element={
@@ -72,6 +77,7 @@ function App() {
             }
           />
         </Route>
+
         <Route
           path="/vendor"
           element={
@@ -89,10 +95,10 @@ function App() {
             }
           />
           <Route
-            path="dashboard"
+            path="leads"
             element={
               <Suspense fallback={"Loading"}>
-                <VendorDashboard />
+                <AllLeads />
               </Suspense>
             }
           />
@@ -105,6 +111,9 @@ function App() {
             }
           />
         </Route>
+
+
+        
       </Routes>
     </Router>
   );
