@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, TextField, IconButton, Toolbar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  IconButton,
+  Toolbar,
+  Stack,
+  Button,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { Search, Delete, Edit, EmojiEmotions, ViewInAr, PanoramaFishEye, Visibility } from "@mui/icons-material";
+import {
+  Search,
+  Delete,
+  Edit,
+  EmojiEmotions,
+  ViewInAr,
+  PanoramaFishEye,
+  Visibility,
+  Add,
+} from "@mui/icons-material";
 import axios from "axios";
 import VendorLayout from "./VendorLayout";
+import AddEmployeeModal from "../AddEmployeeModal";
 
 const columns = [
   { field: "firstName", headerName: "First Name", width: 200 },
@@ -33,15 +51,13 @@ const handleDelete = (id) => {
 
 function AllEmployee() {
   const [employees, setEmployees] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const fetchLeads = async () => {
     const { data } = await axios.get("/api/v1/vendor/all-employee", {
       withCredentials: true,
     });
-    setEmployees(data.employee)
-    // if (data && data.size > 0) {
-    //   setEmployees(data.allVendor);
-    // }
+    setEmployees(data.employee);
   };
 
   useEffect(() => {
@@ -69,6 +85,15 @@ function AllEmployee() {
         }}
       />
       <Box style={{ height: 400, width: "100%", marginTop: "20px" }}>
+        <Stack alignItems={"flex-end"} m={2}>
+          <Button
+            onClick={() => setOpen(true)}
+            startIcon={<Add />}
+            variant="contained"
+          >
+            Add Employee
+          </Button>
+        </Stack>
         <DataGrid
           rows={employees}
           getRowId={(row) => row._id}
@@ -76,8 +101,12 @@ function AllEmployee() {
           pageSize={5}
           rowsPerPageOptions={[5, 10, 20]}
           // checkboxSelection
+          // loading={open}
         />
       </Box>
+      {
+        open && <AddEmployeeModal open={open} setOpen={setOpen} />
+      }
     </VendorLayout>
   );
 }
