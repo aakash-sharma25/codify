@@ -53,7 +53,7 @@ function AllEmployee() {
   const [employees, setEmployees] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const fetchLeads = async () => {
+  const fetchEmployees = async () => {
     const { data } = await axios.get("/api/v1/vendor/all-employee", {
       withCredentials: true,
     });
@@ -61,7 +61,7 @@ function AllEmployee() {
   };
 
   useEffect(() => {
-    fetchLeads();
+    fetchEmployees();
   }, []);
 
   return (
@@ -105,7 +105,7 @@ function AllEmployee() {
         />
       </Box>
       {
-        open && <AddEmployeeModal open={open} setOpen={setOpen} />
+        open && <AddEmployeeModal open={open} setOpen={setOpen} fetchEmployees={fetchEmployees} />
       }
     </VendorLayout>
   );
