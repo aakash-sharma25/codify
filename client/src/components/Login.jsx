@@ -18,27 +18,15 @@ const Login = () => {
         password,
       });
 
-      console.log(data);
-      let role = data.role;
-      // role = role.toL
+      localStorage.setItem("userRole", data?.role);
+      // let role = data.role;
 
-      navigate(`/${data.role.toLowerCase()}/dashboard`);
+      navigate(`/${data?.role?.toLowerCase()}/dashboard`);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
-    // axios
-    //   .post("/api/v1/auth/login", { email, password })
-    //   .then((response) => {
-    //     console.log("Login successful:", response.data);
-    //     navigate("/");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Login error:", error);
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+   
   };
 
   return (
