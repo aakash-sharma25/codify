@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Modal,
   Box,
@@ -24,14 +25,19 @@ const style = {
   p: 4,
 };
 
-export default function AddEmployeeModal({ open, setOpen, user = "Manager" }) {
+export default function AddEmployeeModal({
+  open,
+  setOpen,
+  user = "Vendor",
+  fetchEmployees,
+}) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const handelSubmit = () => {
+  const handelSubmit = async () => {
     const userInfo = {
       firstName,
       lastName,
@@ -40,10 +46,11 @@ export default function AddEmployeeModal({ open, setOpen, user = "Manager" }) {
       password,
       role,
     };
-    const { data } = axios.post("/api/v1/vendor/add-employee", userInfo, {
+    await axios.post("/api/v1/vendor/add-employee", userInfo, {
       withCredentials: true,
     });
-    console.log(data)
+    await fetchEmployees();
+    setOpen(false);
   };
   return (
     <Modal
@@ -114,7 +121,9 @@ export default function AddEmployeeModal({ open, setOpen, user = "Manager" }) {
               onChange={(e) => setRole(e.target.value)}
               label="Role"
             >
-              <MenuItem value="Manager">Manager</MenuItem>
+              {user === "Vendor" && (
+                <MenuItem value="Manager">Manager</MenuItem>
+              )}
               <MenuItem value="Employee">Employee</MenuItem>
             </Select>
           </FormControl>
