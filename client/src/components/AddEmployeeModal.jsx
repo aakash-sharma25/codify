@@ -28,7 +28,7 @@ const style = {
 export default function AddEmployeeModal({
   open,
   setOpen,
-  user = "Vendor",
+  user = "vendor",
   fetchEmployees,
 }) {
   const [firstName, setFirstName] = useState("");
@@ -46,7 +46,7 @@ export default function AddEmployeeModal({
       password,
       role,
     };
-    await axios.post("/api/v1/vendor/add-employee", userInfo, {
+    await axios.post(`/api/v1/${user}/add-employee`, userInfo, {
       withCredentials: true,
     });
     await fetchEmployees();
@@ -121,7 +121,7 @@ export default function AddEmployeeModal({
               onChange={(e) => setRole(e.target.value)}
               label="Role"
             >
-              {user === "Vendor" && (
+              {user === "vendor" && (
                 <MenuItem value="Manager">Manager</MenuItem>
               )}
               <MenuItem value="Employee">Employee</MenuItem>
