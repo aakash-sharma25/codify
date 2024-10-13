@@ -10,8 +10,8 @@ const columns = [
   { field: "location", headerName: "Location", width: 150 },
   { field: "email", headerName: "Email ID", width: 200 },
   { field: "phone", headerName: "Mobile no", width: 120 },
-  { field: "details", headerName: "Lead For", width: 400 },
-  { field: "isGenuine", headerName: "Is Genuine", width: 120 },
+  { field: "details", headerName: "Lead For", width: 300 },
+  // { field: "isGenuine", headerName: "Is Genuine", width: 120 },
   { field: "createdAt", headerName: "Date", width: 150 },
   {
     field: "actions",
