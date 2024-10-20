@@ -6,6 +6,8 @@ import Profile from "./components/Profile";
 import ManagerLeads from "./components/Manager/ManagerLeads";
 import ManagerDashboard from "./components/Manager/ManagerDashboard";
 import ManagersEmployee from "./components/Manager/ManagersEmployee";
+import EmployeeDashbord from "./components/Employee/EmployeeDashboard";
+import EmployeeLeads from "./components/Employee/EmployeeLeads";
 
 const Login = React.lazy(() => import("./components/Login"));
 const Register = React.lazy(() => import("./components/Register"));
@@ -55,6 +57,7 @@ function App() {
           }
         />
 
+        {/* super admin */}
         <Route
           path="/superadmin"
           element={
@@ -80,7 +83,7 @@ function App() {
             }
           />
         </Route>
-
+        {/* vendor */}
         <Route
           path="/vendor"
           element={
@@ -114,7 +117,7 @@ function App() {
             }
           />
         </Route>
-
+        {/* manager */}
         <Route
           path="/manager"
           element={
@@ -136,6 +139,41 @@ function App() {
             element={
               <Suspense fallback={"Loading"}>
                 <ManagerLeads />
+              </Suspense>
+            }
+          />
+          <Route
+            path="employees"
+            element={
+              <Suspense fallback={"Loading"}>
+                <ManagersEmployee />
+              </Suspense>
+            }
+          />
+        </Route>
+
+        {/* employee */}
+        <Route
+          path="/employee"
+          element={
+            <Suspense fallback={"Loading"}>
+              <ProtectedRoute role={"Employee"} />
+            </Suspense>
+          }
+        >
+          <Route
+            path="dashboard"
+            element={
+              <Suspense fallback={"Loading"}>
+                <EmployeeDashbord />
+              </Suspense>
+            }
+          />
+          <Route
+            path="leads"
+            element={
+              <Suspense fallback={"Loading"}>
+                <EmployeeLeads />
               </Suspense>
             }
           />
