@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button, Typography, Box, Grid } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,14 +20,29 @@ const Login = () => {
       });
 
       localStorage.setItem("userRole", data?.role);
-      // let role = data.role;
+      localStorage.setItem("name", data?.name);
+      toast("Login Successfull", {
+        icon: "✅",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
 
       navigate(`/${data?.role?.toLowerCase()}/dashboard`);
     } catch (error) {
       console.log(error);
       setLoading(false);
+      toast(error?.response?.data?.message, {
+        icon: "❌",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
     }
-   
   };
 
   return (
