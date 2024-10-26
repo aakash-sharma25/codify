@@ -8,7 +8,7 @@ import ManagerDashboard from "./components/Manager/ManagerDashboard";
 import ManagersEmployee from "./components/Manager/ManagersEmployee";
 import EmployeeDashbord from "./components/Employee/EmployeeDashboard";
 import EmployeeLeads from "./components/Employee/EmployeeLeads";
-
+import EmployeeDetails from "./components/Vendor/EmployeeDetails";
 const Login = React.lazy(() => import("./components/Login"));
 const Register = React.lazy(() => import("./components/Register"));
 const ProtectedRoute = React.lazy(() => import("./utils/ProtectedRoute"));
@@ -53,6 +53,14 @@ function App() {
           element={
             <Suspense fallback={"Loading"}>
               <Profile />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/employee-details/:userId"
+          element={
+            <Suspense fallback={"Loading"}>
+              <EmployeeDetails />
             </Suspense>
           }
         />
