@@ -52,6 +52,12 @@ const columns = [
     renderCell: (params) => <p> {params?.row?.masterLead?.details} </p>,
   },
   {
+    field: "status",
+    headerName: "Status",
+    width: 150,
+    // renderCell: (params) => <p> {params?.row?.masterLead?.details} </p>,
+  },
+  {
     field: "manager",
     headerName: "Manager",
     width: 250,
