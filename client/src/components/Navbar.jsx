@@ -57,8 +57,8 @@ export default function Navbar() {
                 alt="User Avatar"
               />
               <Box ml={2}>
-                <Typography variant="body1">Aakash Sharma</Typography>
-                <Typography variant="caption">Admin</Typography>
+                <Typography variant="body1">{localStorage.getItem("name")}</Typography>
+                <Typography variant="caption">{localStorage.getItem("userRole")}</Typography>
               </Box>
 
               <Menu
