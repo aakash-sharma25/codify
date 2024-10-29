@@ -4,17 +4,18 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Toolbar,
 } from "@mui/material";
 import React from "react";
 import Navbar from "../Navbar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminLayout({ children }) {
-
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -36,27 +37,41 @@ function AdminLayout({ children }) {
           <Toolbar />
           <Box sx={{ overflow: "auto" }}>
             <List>
-              <ListItem
-                button
+              <ListItemButton
+                style={{
+                  borderRadius: "10px",
+                  backgroundColor:
+                    pathname === "/superadmin/dashboard"
+                      ? "gray"
+                      : "transparent",
+                }}
+                // selected={pathname === "/superadmin/dashboard"}
                 onClick={() => navigate("/superadmin/dashboard")}
               >
                 <ListItemIcon>
                   <Assignment style={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Leads" />
-              </ListItem>
-              <ListItem button onClick={() => navigate("/superadmin/vendors")}>
+              </ListItemButton>
+              <ListItemButton
+                style={{
+                  borderRadius: "10px",
+                  backgroundColor:
+                    pathname === "/superadmin/vendors" ? "gray" : "transparent",
+                }}
+                onClick={() => navigate("/superadmin/vendors")}
+              >
                 <ListItemIcon>
                   <Group style={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Vendors" />
-              </ListItem>
-              <ListItem button onClick={() => navigate("/superadmin/dashboard")}>
+              </ListItemButton>
+              {/* <ListItem button onClick={() => navigate("/superadmin/dashboard")}>
                 <ListItemIcon>
                   <PlaylistAdd style={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Requested Lead" />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Box>
         </Drawer>
