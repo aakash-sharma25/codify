@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import illustration from "../assets/Illustration.png";
+import { bgDark } from "../constants/ColorConstant";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -109,11 +110,17 @@ const Register = () => {
             label="Password"
             name="password"
             value={password}
+            error={password.trim() !== "" && password.length < 6}
             onChange={(e) => setPassword(e.target.value)}
             variant="outlined"
             type="password"
             fullWidth
             margin="normal"
+            helperText={
+              password.trim() !== "" && password.length < 6
+                ? "Password Minimum Length is 6"
+                : ""
+            }
           />
 
           <Button
@@ -123,6 +130,7 @@ const Register = () => {
             fullWidth
             sx={{ marginTop: 2 }}
             onClick={handleSubmit}
+            disabled={loading}
           >
             Create Account
           </Button>
@@ -145,7 +153,7 @@ const Register = () => {
         xs={12}
         sm={5}
         style={{
-          backgroundColor: "black",
+          backgroundColor: bgDark,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -153,7 +161,7 @@ const Register = () => {
       >
         <Box sx={{ width: "80%" }}>
           <img
-            src={illustration} 
+            src={illustration}
             alt="illustration"
             style={{ width: "100%" }}
           />
