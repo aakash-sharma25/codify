@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -38,7 +39,14 @@ export default function Navbar() {
     <>
       <AppBar
         position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{
+          bgcolor: "transparent",
+          color: "black",
+          padding: 1,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        elevation={0}
+        // sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
           <Box
@@ -47,18 +55,33 @@ export default function Navbar() {
             alignItems="center"
             width="100%"
           >
-            <Typography variant="h6" noWrap component="div">
-              Lead Management
-            </Typography>
-            <Box display="flex" alignItems="center">
+            <Box
+              display={"flex"}
+              gap={1}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Avatar src={logo} alt="companylogo" />
+              <Typography color="primary" fontSize={"20px"}>
+                Lead{" "}
+              </Typography>
+            </Box>
+            <Box display={"flex"}>
               <Avatar
                 onClick={handleOpenUserMenu}
-                src="https://via.placeholder.com/150"
+                src="https://mui.com/static/images/avatar/2.jpg"
                 alt="User Avatar"
+                sx={{
+                  ":hover": { cursor: "pointer", border: "1px solid blue" },
+                }}
               />
               <Box ml={2}>
-                <Typography variant="body1">{localStorage.getItem("name")}</Typography>
-                <Typography variant="caption">{localStorage.getItem("userRole")}</Typography>
+                <Typography variant="body1">
+                  {localStorage.getItem("name")}
+                </Typography>
+                <Typography variant="caption">
+                  {localStorage.getItem("userRole")}
+                </Typography>
               </Box>
 
               <Menu
