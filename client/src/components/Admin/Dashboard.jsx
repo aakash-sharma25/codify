@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Search, Delete, Edit } from "@mui/icons-material";
 import AdminLayout from "./AdminLayout";
 import axios from "axios";
+import moment from "moment";
 
 const columns = [
   { field: "name", headerName: "Name", width: 180 },
@@ -12,7 +13,14 @@ const columns = [
   { field: "phone", headerName: "Mobile no", width: 120 },
   { field: "details", headerName: "Lead For", width: 300 },
   // { field: "isGenuine", headerName: "Is Genuine", width: 120 },
-  { field: "createdAt", headerName: "Date", width: 150 },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    width: 150,
+    renderCell: (params) => (
+      <p>{moment(params?.row?.createdAt).format("DD-MM-YYYY")} </p>
+    ),
+  },
   {
     field: "actions",
     headerName: "Actions",
@@ -83,7 +91,9 @@ function Dashboard() {
           getRowId={(row) => row._id}
           columns={columns}
           pageSize={5}
-          rowsPerPageOptions={[5,10,20]}
+          rowsPerPageOptions={[5, 10, 20]}
+          disableRowSelectionOnClick
+          disableColumnSelector
           // checkboxSelection
         />
       </Box>
