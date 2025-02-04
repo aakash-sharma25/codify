@@ -1,20 +1,22 @@
-import { Assignment, Group, PlaylistAdd } from "@mui/icons-material";
+/* eslint-disable react/prop-types */
+import { Assignment, Group } from "@mui/icons-material";
 import {
   Box,
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import React from "react";
 import Navbar from "../Navbar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { bgDark } from "../../constants/ColorConstant";
 
 function VendorLayout({ children }) {
-
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -28,7 +30,7 @@ function VendorLayout({ children }) {
             [`& .MuiDrawer-paper`]: {
               width: 240,
               boxSizing: "border-box",
-              backgroundColor: "black",
+              backgroundColor: bgDark,
               color: "white",
             },
           }}
@@ -36,21 +38,53 @@ function VendorLayout({ children }) {
           <Toolbar />
           <Box sx={{ overflow: "auto" }}>
             <List>
-              <ListItem
-                button
+              <ListItemButton
+                style={{
+                  borderRadius: "0 40px 40px 0",
+                  marginBlock:"10px",
+                  
+                  backgroundColor:
+                    pathname === "/vendor/dashboard"
+                      ? "Highlight"
+                      : "transparent",
+                }}
                 onClick={() => navigate("/vendor/dashboard")}
               >
                 <ListItemIcon>
                   <Assignment style={{ color: "white" }} />
                 </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+              <ListItemButton
+                style={{
+                  borderRadius: "0 40px 40px 0",
+                  marginBlock:"10px",
+                  backgroundColor:
+                    pathname === "/vendor/leads" ? "Highlight" : "transparent",
+                }}
+                onClick={() => navigate("/vendor/leads")}
+              >
+                <ListItemIcon>
+                  <Assignment style={{ color: "white" }} />
+                </ListItemIcon>
                 <ListItemText primary="Leads" />
-              </ListItem>
-              <ListItem button onClick={() => navigate("/vendor/employees")}>
+              </ListItemButton>
+              <ListItemButton
+                style={{
+                  borderRadius: "0 40px 40px 0",
+                  marginBlock:"10px",
+                  backgroundColor:
+                    pathname === "/vendor/employees"
+                      ? "Highlight"
+                      : "transparent",
+                }}
+                onClick={() => navigate("/vendor/employees")}
+              >
                 <ListItemIcon>
                   <Group style={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Employees" />
-              </ListItem>
+              </ListItemButton>
             </List>
           </Box>
         </Drawer>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -9,55 +9,58 @@ import {
   Button,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import {
-  Search,
-  Delete,
-  Edit,
-  EmojiEmotions,
-  ViewInAr,
-  PanoramaFishEye,
-  Visibility,
-  Add,
-} from "@mui/icons-material";
+import { Search, Visibility, Add } from "@mui/icons-material";
 import axios from "axios";
 import VendorLayout from "./VendorLayout";
 import AddEmployeeModal from "../AddEmployeeModal";
-
-const columns = [
-  { field: "firstName", headerName: "First Name", width: 200 },
-  { field: "lastName", headerName: "Last Name", width: 200 },
-  { field: "email", headerName: "Email ID", width: 200 },
-  { field: "phone", headerName: "Mobile No", width: 200 },
-  { field: "subscription", headerName: "Subscription", width: 200 },
-  { field: "role", headerName: "Role", width: 200 },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 150,
-    sortable: false,
-    renderCell: (params) => (
-      <Box>
-        <IconButton color="error" onClick={() => console.log(params)}>
-          <Visibility />
-        </IconButton>
-      </Box>
-    ),
-  },
-];
-
-const handleDelete = (id) => {
-  alert(`Deleting lead with ID: ${id}`);
-};
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function AllEmployee() {
+
+  const columns = [
+    { field: "firstName", headerName: "First Name", width: 200 },
+    { field: "lastName", headerName: "Last Name", width: 200 },
+    { field: "email", headerName: "Email ID", width: 200 },
+    { field: "phone", headerName: "Mobile No", width: 200 },
+    { field: "role", headerName: "Role", width: 200 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      sortable: false,
+      renderCell: (params) => (
+        <Box>
+          <IconButton
+            color="error"
+            onClick={() => navigate(`/employee-details/${params.id}`)}
+          >
+            <Visibility />
+          </IconButton>
+        </Box>
+      ),
+    },
+  ];
+  
   const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const fetchEmployees = async () => {
-    const { data } = await axios.get("/api/v1/vendor/all-employee", {
-      withCredentials: true,
-    });
-    setEmployees(data.employee);
+    try {
+      setLoading(true);
+      const { data } = await axios.get("/api/v1/vendor/all-employee", {
+        withCredentials: true,
+      });
+      setEmployees(data.employee);
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal server error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -68,13 +71,12 @@ function AllEmployee() {
     <VendorLayout>
       <Toolbar />
       <Typography variant="h4" gutterBottom>
-        Leads
+        All Employees
       </Typography>
 
-      {/* Search Bar */}
       <TextField
         variant="outlined"
-        placeholder="Search Lead..."
+        placeholder="Search Employee..."
         fullWidth
         InputProps={{
           startAdornment: (
@@ -100,13 +102,17 @@ function AllEmployee() {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10, 20]}
-          // checkboxSelection
-          // loading={open}
+          disableRowSelectionOnClick
+          loading={loading}
         />
       </Box>
-      {
-        open && <AddEmployeeModal open={open} setOpen={setOpen} fetchEmployees={fetchEmployees} />
-      }
+      {open && (
+        <AddEmployeeModal
+          open={open}
+          setOpen={setOpen}
+          fetchEmployees={fetchEmployees}
+        />
+      )}
     </VendorLayout>
   );
 }

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  TextField,
-  IconButton,
   Toolbar,
   Card,
   CardContent,
@@ -14,56 +12,29 @@ import {
 import VendorLayout from "./VendorLayout";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// const columns = [
-//   { field: "name", headerName: "Name", width: 180 },
-//   { field: "location", headerName: "Location", width: 150 },
-//   { field: "email", headerName: "Email ID", width: 200 },
-//   { field: "phone", headerName: "Mobile no", width: 120 },
-//   { field: "details", headerName: "Lead For", width: 400 },
-//   { field: "isGenuine", headerName: "Is Genuine", width: 120 },
-//   { field: "createdAt", headerName: "Date", width: 150 },
-//   {
-//     field: "actions",
-//     headerName: "Actions",
-//     width: 150,
-//     sortable: false,
-//     renderCell: (params) => (
-//       <Box>
-//         <IconButton color="error" onClick={() => handleDelete(params.row._id)}>
-//           <Delete />
-//         </IconButton>
-//         <IconButton color="primary" onClick={() => handleEdit(params.row._id)}>
-//           <Edit />
-//         </IconButton>
-//       </Box>
-//     ),
-//   },
-// ];
-
-// // Function to handle delete action
-// const handleDelete = (id) => {
-//   alert(`Deleting lead with ID: ${id}`);
-// };
-
-// // Function to handle edit action
-// const handleEdit = (id) => {
-//   alert(`Editing lead with ID: ${id}`);
-// };
+import TotalLeads from "./components/TotalLeads";
+import TotalEmployee from "./components/TotalEmployee";
+import SubscriptionDetails from "./components/SubscriptionDetails";
+import CompletedLeadThisMonth from "./components/CompletedLeadThisMonth";
+import RcentCompleted from "./components/RcentCompleted";
+import AllLeadsPieChart from "./components/AllLeadsPieChart";
 
 function VendorDashboard() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [totalLeads, setTotalLeads] = useState(0);
   const [totalEmployees, setTotalEmployees] = useState(0);
+  const [chartData, setChartData] = useState([]);
 
   const fetchdetails = async () => {
     const { data } = await axios.get("/api/v1/vendor/dashboard", {
       withCredentials: true,
     });
+
     setProfile(data?.vendor);
     setTotalLeads(data?.totalLeads);
     setTotalEmployees(data?.totalEmployees);
+    setChartData(data?.chartData);
   };
 
   useEffect(() => {
@@ -73,10 +44,43 @@ function VendorDashboard() {
   return (
     <VendorLayout>
       <Toolbar />
-      <Box sx={{ flexGrow: 1, padding: 4 }}>
-        <Grid container spacing={2}>
-          {/* Left Part: Profile Section */}
-          <Grid item xs={12} md={6}>
+      <Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "20px",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <TotalEmployee />
+          <TotalLeads />
+          <SubscriptionDetails />
+          <CompletedLeadThisMonth />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "20px",
+            marginTop: "40px",
+            flexWrap: "wrap",
+            alignItems: "start",
+            justifyContent: "space-between",
+          }}
+        >
+          <RcentCompleted />
+          <AllLeadsPieChart/>
+          {/* <TotalEmployee />
+          <TotalLeads />
+          <SubscriptionDetails />
+          <CompletedLeadThisMonth /> */}
+        </Box>
+      </Box>
+      {/* <Box sx={{ flexGrow: 1, padding: 4 }}> */}
+      {/* <Grid container spacing={2}> */}
+
+      {/* <Grid item xs={12} md={6}>
             <Card sx={{ maxWidth: 400, margin: "auto" }}>
               <CardContent>
                 <Typography variant="h5" component="div" gutterBottom>
@@ -95,17 +99,27 @@ function VendorDashboard() {
                   <strong>Subscription:</strong> {profile?.subscription}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  <strong>Subscription Ends In:</strong>{" "}
+                  <strong>Subscription Date:</strong>{" "}
                   {profile?.subscriptionDate
                     ? profile?.subscriptionDate
                     : "Not Valid"}
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
 
-          {/* Right Part: Counts Section */}
-          <Grid item xs={12} md={6}>
+            <PieChart
+              sx={{ marginTop: "30px" }}
+              series={[
+                {
+                  data: chartData,
+                },
+              ]}
+              width={400}
+              height={200}
+            />
+          </Grid> */}
+
+      {/* <Grid item xs={12} md={6}>
             <Card sx={{ maxWidth: 400, margin: "auto" }}>
               <CardContent>
                 <Typography variant="h5" component="div" gutterBottom>
@@ -124,6 +138,7 @@ function VendorDashboard() {
                 </CardActions>
               </CardContent>
             </Card>
+
             <Card sx={{ maxWidth: 400, margin: "auto", marginTop: "20px" }}>
               <CardContent>
                 <Typography variant="h5" component="div" gutterBottom>
@@ -147,9 +162,10 @@ function VendorDashboard() {
                 </CardActions>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
-      </Box>
+          </Grid> */}
+
+      {/* </Grid> */}
+      {/* </Box> */}
     </VendorLayout>
   );
 }
