@@ -4,6 +4,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Search, Delete, Edit } from "@mui/icons-material";
 import AdminLayout from "./AdminLayout";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+import moment from "moment";
 
 const columns = [
   { field: "firstName", headerName: "First Name", width: 200 },
@@ -11,7 +13,27 @@ const columns = [
   { field: "email", headerName: "Email ID", width: 200 },
   { field: "phone", headerName: "Mobile No", width: 200 },
   { field: "subscription", headerName: "Subscription", width: 200 },
-  { field: "createdAt", headerName: "Joined", width: 200 },
+  {
+    field: "createdAt",
+    headerName: "Joined",
+    width: 200,
+    renderCell: (params) => (
+      <p>{moment(params?.row?.createdAt).format("DD-MM-YYYY")} </p>
+    ),
+  },
+  {
+    field: "",
+    headerName: "Subscription Date",
+    width: 200,
+    renderCell: (params) => (
+      <p>
+        {" "}
+        {params?.row?.subscriptionDate
+          ? moment(params?.row?.subscriptionDate).format("DD-MM-YYYY")
+          :"-"}{" "}
+      </p>
+    ),
+  },
   {
     field: "actions",
     headerName: "Actions",
@@ -33,13 +55,48 @@ const handleDelete = (id) => {
 
 function AllVendors() {
   const [vendors, setVendors] = useState([]);
+  const [loading, setLoading] = useState([]);
 
   const fetchLeads = async () => {
-    const { data } = await axios.get("/api/v1/admin/vendor-list", {
-      withCredentials: true,
-    });
-    if (data && data.size > 0) {
-      setVendors(data.allVendor);
+    try {
+      setLoading(true);
+      const { data } = await axios.get("/api/v1/admin/vendor-list", {
+        withCredentials: true,
+      });
+      if (data && data.size > 0) {
+        setVendors(data.allVendor);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("internal server error");
+      setLoading(false);
+    }
+  };
+  const searchVendor = async (search) => {
+    try {
+      if (search == "") {
+        fetchLeads();
+        return;
+      }
+      setLoading(true);
+      const { data } = await axios.post(
+        "/api/v1/admin/vendor-search",
+        {
+          search,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (data) {
+        setVendors(data.user);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("internal server error");
+      setLoading(false);
     }
   };
 
@@ -51,14 +108,14 @@ function AllVendors() {
     <AdminLayout>
       <Toolbar />
       <Typography variant="h4" gutterBottom>
-        Leads
+        All Vendors
       </Typography>
 
-      {/* Search Bar */}
       <TextField
         variant="outlined"
-        placeholder="Search Lead..."
+        placeholder="Search Vendors ..."
         fullWidth
+        onChange={(e) => searchVendor(e.target.value)}
         InputProps={{
           startAdornment: (
             <IconButton position="start">
@@ -72,7 +129,9 @@ function AllVendors() {
           rows={vendors}
           getRowId={(row) => row._id}
           columns={columns}
+          disableRowSelectionOnClick
           pageSize={5}
+          loading={loading}
           rowsPerPageOptions={[5, 10, 20]}
           // checkboxSelection
         />
