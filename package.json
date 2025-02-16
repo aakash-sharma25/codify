@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm run build --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "client": "npm run dev --prefix client",
-    "production": "concurrently \"npm run start\" \"npm run client\""
+    "production": "npm run build --prefix client && node index.js"
   },
   "keywords": [],
   "author": "",
