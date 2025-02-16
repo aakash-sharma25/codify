@@ -89,6 +89,17 @@ exports.loginController = async (req, res) => {
       maxAge: 2 * 24 * 60 * 60 * 1000,
     };
 
+    const currentMonth = new Date().getMonth();
+    const lastUpdatedMonth = new Date(user.updatedAt).getMonth();
+
+    if (currentMonth !== lastUpdatedMonth) {
+      user.totalHoursWorked = 0;
+    }
+
+    user.loginTime = new Date();
+
+    await user.save();
+
     const loggedInUser = await User.findById(user._id);
 
     return res
@@ -116,6 +127,22 @@ exports.logoutController = async (req, res) => {
       httpOnly: true,
       secure: true,
     };
+
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user || !user.loginTime) {
+      return res.status(400).json({ message: "User is not logged in" });
+    }
+
+    const logoutTime = new Date();
+    const workedMilliseconds = logoutTime - user.loginTime;
+
+    user.totalHoursWorked += workedMilliseconds;
+    user.loginTime = null; // Reset login time
+    await user.save();
+
     return res.status(200).clearCookie("accessToken", options).json({
       success: true,
       message: "User logged out successfull",
@@ -156,6 +183,40 @@ exports.getRole = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "error in getting role",
+      error: error.message,
+    });
+  }
+};
+
+exports.getLoginTime = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const totalMilliseconds = user.totalHoursWorked;
+
+    // Convert to hours, minutes, seconds
+    const totalSeconds = Math.floor(totalMilliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    // res.json({ email, totalHoursWorked: user.totalHoursWorked.toFixed(2) });
+    return res.status(200).json({
+      success: true,
+      message: "Total Login time",
+      totalHoursWorked: `${hours}h ${minutes}m ${seconds}s`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "error in getting time",
       error: error.message,
     });
   }

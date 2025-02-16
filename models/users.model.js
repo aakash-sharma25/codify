@@ -48,6 +48,8 @@ const userSchema = new mongoose.Schema(
     subscriptionDate: {
       type: String,
     },
+    loginTime: { type: Date },
+    totalHoursWorked: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

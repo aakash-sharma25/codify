@@ -614,7 +614,7 @@ exports.recentCompletedLeads = async (req, res) => {
   try {
     const { vendorId } = req.body;
     const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth()-3, 1);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth() - 3, 1);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
     const completedLeads = await VendorLead.find({
@@ -686,24 +686,30 @@ exports.subscriptionEndsIn = async (req, res) => {
     );
     const subscriptionDate = moment(vendor.subscriptionDate);
 
+    console.log(subscriptionDate,"subscription date");
     if (!subscriptionDate.isValid()) {
-      return res.status(500).json({ sdfj: "asldkj" });
+      return res.status(500).json({ messgae: "invalid subscription date" });
     }
 
-    const endDate = subscriptionDate.clone().add(2, "months");
-    // console.log(subscriptionDate, endDate);
-
+    const endDate = subscriptionDate.clone().add(1, "months");
+    console.log(endDate, "end date");
     const now = moment();
 
     if (now.isAfter(endDate)) {
-      console.log("expired");
-      return "Subscription has expired.";
+      console.log("expired date is expired");
+      return res.status(200).json({
+        message: "Subscription has ended",
+        status: true,
+        remainingDuration: 0,
+        subscription: vendor.subscription,
+      });
     }
 
     const remainingDuration = endDate.diff(now, "days");
 
-    res.status(200).json({
-      message: "Count of the completed leads",
+    console.log(remainingDuration , "remaining duration");
+    return res.status(200).json({
+      message: "remaing days of subscription",
       status: true,
       remainingDuration,
       subscription: vendor.subscription,
@@ -725,7 +731,7 @@ exports.topPerformer = async (req, res) => {
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
     const topEmployee = await VendorLead.aggregate([
-      {
+      {   
         $match: {
           status: "completed",
           vendor: new mongoose.Types.ObjectId(vendorId),
@@ -757,6 +763,46 @@ exports.topPerformer = async (req, res) => {
     res.status(500).json({
       message: "error in fetching the details",
       status: false,
+    });
+  }
+};
+
+exports.searchEmployee = async (req, res) => {
+  try {
+    const { search } = req.body;
+
+    if (!search) {
+      return res.status(400).json({
+        success: false,
+        message: "Search query is required",
+      });
+    }
+
+    const users = await User.find({
+      $and: [
+        {
+          $or: [
+            { firstName: { $regex: search, $options: "i" } },
+            { lastName: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+          ],
+        },
+        { role: { $in: ["Employee", "Manager"] } },
+        { vendor: new mongoose.Types.ObjectId(req.body.vendorId) },
+      ],
+    });
+
+    return res.status(200).json({
+      size: users.length,
+      success: true,
+      message: "Users fetched successfully",
+      users,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching the users",
+      error: error.message,
     });
   }
 };

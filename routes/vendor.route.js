@@ -19,6 +19,7 @@ const {
   totalLeads,
   totalEmployees,
   individualLeadCount,
+  searchEmployee,
 } = require("../controllers/vendor.controller");
 
 const router = express.Router();
@@ -32,6 +33,8 @@ router.get("/request-leads", isVendor, requestLeads);
 router.get("/all-leads", isVendor, allLeads);
 
 router.post("/add-employee", isVendor, addEmployee);
+
+router.post("/search-employee", isVendor, searchEmployee);
 
 router.get("/all-manager", isVendor, allManager);
 
@@ -54,5 +57,7 @@ router.get("/total-employees",isVendor, totalEmployees);
 router.get("/completed-leads",isVendor, completedLeadsThisMonth); 
 router.get("/subscription-endsIn",isVendor, subscriptionEndsIn);
 router.get("/recent-completed-leads",isVendor, recentCompletedLeads); 
+
 router.get("/top-performer",isVendor, topPerformer);
+
 module.exports = router;
