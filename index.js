@@ -34,9 +34,24 @@ app.use("/api/v1/vendor", vendorRoutes);
 app.use("/api/v1/manager", managerRoutes);
 app.use("/api/v1/employee", employeeRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
+// app.get("/", (req, res) => {
+//   res.send("Server is running");
+// });
+
+if(process.env.MODE==="development") {
+  
+  app.get("/", (req, res) => { 
+    res.send("Server is running");
+  });
+
+}else{
+  
+  app.use(express.static(path.join(__dirname, "./client/dist")))
+  
+  app.get( "*" , (req,res) =>{
+      res.sendFile(path.join(__dirname , "./client/dist/index.html"))
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
