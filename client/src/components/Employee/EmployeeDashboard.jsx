@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import EmployeeLayout from "./EmploeeLayout"
-
+import EmployeeLayout from "./EmploeeLayout";
 
 function EmployeeDashbord() {
   const navigate = useNavigate();
@@ -21,9 +20,14 @@ function EmployeeDashbord() {
   const [totalEmployees, setTotalEmployees] = useState(0);
 
   const fetchdetails = async () => {
-    // const { data } = await axios.get("/api/v1/vendor/dashboard", {
-    //   withCredentials: true,
-    // });
+    const { data } = await axios.post(
+      "/api/v1/auth/get-session",
+      { email: localStorage.getItem("email") },
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(data);
     // setProfile(data?.vendor);
     // setTotalLeads(data?.totalLeads);
     // setTotalEmployees(data?.totalEmployees);

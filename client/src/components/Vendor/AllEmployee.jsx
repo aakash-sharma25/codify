@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function AllEmployee() {
-
   const columns = [
     { field: "firstName", headerName: "First Name", width: 200 },
     { field: "lastName", headerName: "Last Name", width: 200 },
@@ -41,7 +40,7 @@ function AllEmployee() {
       ),
     },
   ];
-  
+
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -55,6 +54,28 @@ function AllEmployee() {
         withCredentials: true,
       });
       setEmployees(data.employee);
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal server error");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const searchEmployee = async (search) => {
+    try {
+      if (search === "") {
+        fetchEmployees();
+        return;
+      }
+      setLoading(true);
+      const { data } = await axios.post(
+        "/api/v1/vendor/search-employee",
+        { search },
+        {
+          withCredentials: true,
+        }
+      );
+      setEmployees(data.users);
     } catch (error) {
       console.log(error);
       toast.error("Internal server error");
@@ -78,6 +99,7 @@ function AllEmployee() {
         variant="outlined"
         placeholder="Search Employee..."
         fullWidth
+        onChange={(e) => searchEmployee(e.target.value)}
         InputProps={{
           startAdornment: (
             <IconButton position="start">
