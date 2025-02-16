@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path")
 
 require("dotenv").config();
+const c = require("./client/dist/index.html")
 
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/admin.route");
