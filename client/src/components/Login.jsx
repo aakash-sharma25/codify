@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Typography, Box, Grid } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,6 +29,7 @@ const Login = () => {
 
       localStorage.setItem("userRole", data?.role);
       localStorage.setItem("name", data?.name);
+      localStorage.setItem("email", email);
       toast("Login Successfull", {
         icon: "✅",
         style: {
@@ -52,7 +53,13 @@ const Login = () => {
       });
     }
   };
-
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    const name = localStorage.getItem("name");
+    if (role && name) {
+      navigate(`/${role}/dashboard`);
+    }
+  }, []);
   return (
     <Grid container style={{ minHeight: "100vh" }}>
       <Grid

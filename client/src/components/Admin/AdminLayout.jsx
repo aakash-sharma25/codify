@@ -12,6 +12,7 @@ import {
 import React from "react";
 import Navbar from "../Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import { bgDark, listItemsColor } from "../../constants/ColorConstant";
 
 function AdminLayout({ children }) {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function AdminLayout({ children }) {
             [`& .MuiDrawer-paper`]: {
               width: 240,
               boxSizing: "border-box",
-              backgroundColor: "black",
+              backgroundColor: bgDark,
               color: "white",
             },
           }}
@@ -39,13 +40,12 @@ function AdminLayout({ children }) {
             <List>
               <ListItemButton
                 style={{
-                  borderRadius: "10px",
+                  borderRadius: "0 40px 40px 0",
                   backgroundColor:
                     pathname === "/superadmin/dashboard"
-                      ? "gray"
+                      ? "Highlight"
                       : "transparent",
                 }}
-                // selected={pathname === "/superadmin/dashboard"}
                 onClick={() => navigate("/superadmin/dashboard")}
               >
                 <ListItemIcon>
@@ -55,9 +55,9 @@ function AdminLayout({ children }) {
               </ListItemButton>
               <ListItemButton
                 style={{
-                  borderRadius: "10px",
+                  borderRadius: "0 40px 40px 0",
                   backgroundColor:
-                    pathname === "/superadmin/vendors" ? "gray" : "transparent",
+                    pathname === "/superadmin/vendors" ? "Highlight" : "transparent",
                 }}
                 onClick={() => navigate("/superadmin/vendors")}
               >

@@ -26,9 +26,17 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.get("/api/v1/auth/logout", {
-        withCredentials: true,
-      });
+      await axios.post(
+        "/api/v1/auth/logout",
+        {
+          email: localStorage.getItem("email"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      localStorage.clear("userRole");
+      localStorage.clear("name");
       navigate("/login");
     } catch (error) {
       console.log(error);

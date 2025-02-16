@@ -31,9 +31,9 @@ const columns = [
         <IconButton color="error" onClick={() => handleDelete(params.row._id)}>
           <Delete />
         </IconButton>
-        <IconButton color="primary" onClick={() => handleEdit(params.row._id)}>
+        {/* <IconButton color="primary" onClick={() => handleEdit(params.row._id)}>
           <Edit />
-        </IconButton>
+        </IconButton> */}
       </Box>
     ),
   },
@@ -60,6 +60,25 @@ function Dashboard() {
       setLeads(data.leads);
     }
   };
+  const searchLead = async (e) => {
+    if (e.target.value == "") {
+      fetchLeads();
+      return;
+    }
+    const search = e.target.value;
+    const { data } = await axios.post(
+      "/api/v1/admin/search-leads",
+      {
+        search,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    if (data && data.size > 0) {
+      setLeads(data.leads);
+    }
+  };
 
   useEffect(() => {
     fetchLeads();
@@ -77,6 +96,7 @@ function Dashboard() {
         variant="outlined"
         placeholder="Search Lead..."
         fullWidth
+        onChange={(e) => searchLead(e)}
         InputProps={{
           startAdornment: (
             <IconButton position="start">
