@@ -39,9 +39,12 @@ export default function SubscriptionDetails() {
             <Subscriptions color="white" />
           </Avatar>
           <Typography>Subscription</Typography>
-          <Typography color="blue"> {subscription} </Typography>
+          <Typography color="blue">
+            {" "}
+            {remainingDays > 0 ? subscription : "-"}{" "}
+          </Typography>
           <Typography color={remainingDays > 10 ? "green" : "red"} variant="h6">
-            {remainingDays} Days Left
+            {remainingDays > 0 ? `${remainingDays} Days Left` : "Expired"}
           </Typography>
         </Box>
       </CardContent>

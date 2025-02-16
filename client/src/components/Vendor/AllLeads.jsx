@@ -260,9 +260,10 @@ function AllLeads() {
       renderCell: (params) => <p> {params?.row?.masterLead?.details} </p>,
     },
     {
-      field: "status",
+      field: "",
       headerName: "Status",
-      width: 150,
+      width: 400,
+      renderCell: (params) => <p> {params?.row?.status} </p>,
     },
     {
       field: "manager",
@@ -303,19 +304,19 @@ function AllLeads() {
         </p>
       ),
     },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 150,
-      sortable: false,
-      renderCell: (params) => (
-        <Box>
-          <IconButton color="primary" onClick={() => handleEdit(params?.row)}>
-            <Edit />
-          </IconButton>
-        </Box>
-      ),
-    },
+    // {
+    //   field: "actions",
+    //   headerName: "Actions",
+    //   width: 150,
+    //   sortable: false,
+    //   renderCell: (params) => (
+    //     <Box>
+    //       <IconButton color="primary" onClick={() => handleEdit(params?.row)}>
+    //         <Edit />
+    //       </IconButton>
+    //     </Box>
+    //   ),
+    // },
   ];
   const [leads, setLeads] = useState([]);
   const [selectedLeads, setSelectedLeads] = useState([]);

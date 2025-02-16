@@ -18,6 +18,7 @@ import SubscriptionDetails from "./components/SubscriptionDetails";
 import CompletedLeadThisMonth from "./components/CompletedLeadThisMonth";
 import RcentCompleted from "./components/RcentCompleted";
 import AllLeadsPieChart from "./components/AllLeadsPieChart";
+import TopPerformer from "./components/TopPerformer";
 
 function VendorDashboard() {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ function VendorDashboard() {
           <TotalLeads />
           <SubscriptionDetails />
           <CompletedLeadThisMonth />
+          <TopPerformer/>
         </Box>
         <Box
           sx={{
@@ -71,6 +73,7 @@ function VendorDashboard() {
         >
           <RcentCompleted />
           <AllLeadsPieChart/>
+          {/* <TopPerformer/> */}
           {/* <TotalEmployee />
           <TotalLeads />
           <SubscriptionDetails />
