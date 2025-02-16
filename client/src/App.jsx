@@ -1,5 +1,10 @@
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { Suspense, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import AllVendors from "./components/Admin/AllVendors";
 import Premium from "./components/Premium";
 import Profile from "./components/Profile";
@@ -18,10 +23,21 @@ const VendorDashboard = React.lazy(() =>
 );
 const AllEmployee = React.lazy(() => import("./components/Vendor/AllEmployee"));
 const AllLeads = React.lazy(() => import("./components/Vendor/AllLeads"));
-
 function App() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    const name = localStorage.getItem("name");
+    if (role && name) {
+      navigate(`/${role}/dashboard`);
+    }else{
+      navigate("/login")
+    }
+  }, []);
   return (
-    <Router>
+    <>
       <Routes>
         <Route
           path="/login"
@@ -195,7 +211,7 @@ function App() {
           />
         </Route>
       </Routes>
-    </Router>
+    </>
   );
 }
 
